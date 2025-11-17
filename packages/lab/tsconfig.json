@@ -1,0 +1,16 @@
+{
+    "extends": "@taupo/tsconfig/ts-library.json",
+    "compilerOptions": {
+        "target": "ES2022",
+        "lib": ["ES2022", "DOM", "DOM.Iterable"],
+        "types": ["vite/client", "node"],
+        "noEmit": true,
+        "jsx": "react-jsx",
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./src/*"]
+        }
+    },
+    "include": ["src", "vite.config.ts"],
+    "exclude": ["out"]
+}

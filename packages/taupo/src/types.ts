@@ -44,6 +44,11 @@ export interface TaupoConfig {
  */
 export interface AgentListItem {
     /**
+     * URL-safe key/identifier for the agent (used in API routes)
+     */
+    key: string;
+
+    /**
      * Display name of the agent
      */
     name: string;

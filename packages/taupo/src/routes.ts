@@ -21,10 +21,11 @@ export async function listAgentsHandler(
     c: Context,
     agents: Map<string, Agent<any, any, any> | RouterAgent<any>>,
 ) {
-    const agentList: AgentListItem[] = Array.from(agents.values()).map(
-        agent => {
+    const agentList: AgentListItem[] = Array.from(agents.entries()).map(
+        ([key, agent]) => {
             const tree = agent.getAgentTree();
             return {
+                key,
                 name: agent.info.name,
                 capabilities: agent.info.capabilities,
                 type: tree.type,
