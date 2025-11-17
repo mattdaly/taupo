@@ -1,0 +1,21 @@
+{
+    "name": "example-cf-worker",
+    "version": "0.0.0",
+    "license": "MIT",
+    "type": "module",
+    "scripts": {
+        "dev": "wrangler dev"
+    },
+    "dependencies": {
+        "@ai-sdk/google": "^3.0.0-beta.43",
+        "@taupo/ai": "*",
+        "@taupo/taupo": "*",
+        "ai": "^6.0.0-beta.99",
+        "zod": "^3.25.76"
+    },
+    "devDependencies": {
+        "@taupo/tsconfig": "*",
+        "typescript": "^5.9.3",
+        "wrangler": "^4.47.0"
+    }
+}

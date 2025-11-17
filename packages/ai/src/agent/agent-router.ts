@@ -240,7 +240,7 @@ export class RouterAgent<CALL_OPTIONS = never> extends Agent<
 
         writer?.write({
             type: 'data-handoff',
-            data: { agent: agent.info.capabilities },
+            data: { agent: agent.info.name },
         });
         writer?.write({
             type: 'data-status',
@@ -253,8 +253,8 @@ export class RouterAgent<CALL_OPTIONS = never> extends Agent<
 
     public getAgentTree(): AgentInfoNode {
         return {
-            ...this.info,
             type: 'router',
+            ...this.info,
             subAgents: Array.from(this.subAgents.values()).map(agent => {
                 if (agent instanceof RouterAgent) {
                     return agent.getAgentTree();

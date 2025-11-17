@@ -9,6 +9,7 @@ import {
 } from 'ai';
 import { type Writer } from './types';
 import { type ToolCallContextWithWriter } from '../tool/tool';
+import { AgentInfoNode } from './agent-router';
 
 export type AgentInfo = {
     name: string;
@@ -164,5 +165,12 @@ export class Agent<
         options: AgentCallParameters<CALL_OPTIONS>,
     ): Promise<StreamTextResult<TOOLS, OUTPUT>> {
         return super.stream(this.limitMessageContextLength(options));
+    }
+
+    public getAgentTree(): AgentInfoNode {
+        return {
+            type: 'agent',
+            ...this.info,
+        };
     }
 }
