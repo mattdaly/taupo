@@ -6,9 +6,9 @@ A framework server for building AI agents in Typescript.
 
 - `docs`: a [Next.js](https://nextjs.org/) app
 - `web`: another [Next.js](https://nextjs.org/) app
-- `@e-conomic/ai`: An extension of the AI SDK by Vercel
-- `@e-conomic/taupo`: A framework for building AI agents in Typescript
-- `@e-conomic/a-tsconfig`: `tsconfig.json`s used throughout the monorepo
+- `@taupo/ai`: An extension of the AI SDK by Vercel
+- `@taupo/taupo`: A framework for building AI agents in Typescript
+- `@taupo/a-tsconfig`: `tsconfig.json`s used throughout the monorepo
 
 ### Build
 

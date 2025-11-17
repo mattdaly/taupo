@@ -1,5 +1,5 @@
 {
-    "name": "@economic/taupo",
+    "name": "taupo",
     "private": true,
     "scripts": {
         "build": "turbo run build",

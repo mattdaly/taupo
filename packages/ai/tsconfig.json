@@ -1,5 +1,5 @@
 {
-    "extends": "@framework/tsconfig/ts-library.json",
+    "extends": "@taupo/tsconfig/ts-library.json",
     "compilerOptions": {
         "target": "ES2018",
         "stripInternal": true,

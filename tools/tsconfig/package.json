@@ -1,5 +1,5 @@
 {
-    "name": "@e-conomic/taupo-tsconfig",
+    "name": "@taupo/tsconfig",
     "version": "0.0.0",
     "private": true,
     "license": "MIT"

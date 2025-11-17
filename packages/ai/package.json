@@ -1,5 +1,5 @@
 {
-    "name": "@e-conomic/ai",
+    "name": "@taupo/ai",
     "version": "0.0.0",
     "description": "An extension of the AI SDK by Vercel",
     "license": "Apache-2.0",
@@ -27,7 +27,7 @@
         "@ai-sdk/provider-utils": "^4.0.0-beta.33"
     },
     "devDependencies": {
-        "@e-conomic/taupo-tsconfig": "*",
+        "@taupo/tsconfig": "*",
         "@types/node": "^24.10.1",
         "ai": "^6.0.0-beta.99",
         "tsdown": "^0.16.0",
