@@ -1,0 +1,47 @@
+{
+    "name": "@economic/taupo",
+    "private": true,
+    "scripts": {
+        "build": "turbo run build",
+        "dev": "turbo run dev",
+        "test": "turbo run test",
+        "lint": "turbo run lint",
+        "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+        "typecheck": "turbo run typecheck",
+        "changeset": "changeset",
+        "publish": "turbo run build && changeset version && changeset publish"
+    },
+    "devDependencies": {
+        "@changesets/cli": "^2.29.7",
+        "husky": "^9.1.7",
+        "lint-staged": "^16.2.6",
+        "prettier": "^3.6.2",
+        "turbo": "^2.6.1",
+        "typescript": "5.9.2"
+    },
+    "engines": {
+        "node": ">=18"
+    },
+    "packageManager": "npm@11.5.1",
+    "workspaces": [
+        "packages/*",
+        "tools/*"
+    ],
+    "prettier": {
+        "arrowParens": "avoid",
+        "tabWidth": 4,
+        "singleQuote": true,
+        "trailingComma": "all",
+        "useTabs": false
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "**/*.{ts,tsx,mdx,md,json,yml,yaml}": [
+            "prettier --write"
+        ]
+    }
+}

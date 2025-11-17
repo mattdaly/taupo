@@ -1,0 +1,13 @@
+{
+    "extends": "@framework/tsconfig/ts-library.json",
+    "compilerOptions": {
+        "target": "ES2018",
+        "stripInternal": true,
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "types": ["@types/node"],
+        "composite": true,
+        "rootDir": ".",
+        "outDir": "dist"
+    },
+    "exclude": ["dist", "build", "node_modules", "tsdown.config.ts"]
+}
