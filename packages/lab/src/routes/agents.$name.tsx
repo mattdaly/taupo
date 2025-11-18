@@ -69,17 +69,20 @@ function AgentChat() {
             <div className="flex flex-1 flex-col h-[calc(100vh-4rem)]">
                 <div className="flex-1 overflow-y-auto p-4">
                     <Conversation>
-                        {messages.map((message) => (
+                        {messages.map(message => (
                             <Message key={message.id} from={message.role}>
                                 <MessageContent>
                                     {(() => {
-                                        const sourceParts = message.parts.filter(
-                                            part => part.type === 'source-url',
-                                        );
+                                        const sourceParts =
+                                            message.parts.filter(
+                                                part =>
+                                                    part.type === 'source-url',
+                                            );
                                         const otherParts = message.parts.filter(
                                             part => part.type !== 'source-url',
                                         );
-                                        const hasSources = sourceParts.length > 0;
+                                        const hasSources =
+                                            sourceParts.length > 0;
 
                                         return (
                                             <>
@@ -94,7 +97,10 @@ function AgentChat() {
                                                         />
                                                         <SourcesContent>
                                                             {sourceParts.map(
-                                                                (part, index) => (
+                                                                (
+                                                                    part,
+                                                                    index,
+                                                                ) => (
                                                                     <Source
                                                                         key={`${message.id}-source-${index}`}
                                                                         href={
@@ -110,21 +116,27 @@ function AgentChat() {
                                                         </SourcesContent>
                                                     </Sources>
                                                 )}
-                                                {otherParts.map((part, index) => {
-                                                    switch (part.type) {
-                                                        case 'text':
-                                                            return (
-                                                                <MessageResponse
-                                                                    key={index}
-                                                                >
-                                                                    {part.text}
-                                                                </MessageResponse>
-                                                            );
+                                                {otherParts.map(
+                                                    (part, index) => {
+                                                        switch (part.type) {
+                                                            case 'text':
+                                                                return (
+                                                                    <MessageResponse
+                                                                        key={
+                                                                            index
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            part.text
+                                                                        }
+                                                                    </MessageResponse>
+                                                                );
 
-                                                        default:
-                                                            return null;
-                                                    }
-                                                })}
+                                                            default:
+                                                                return null;
+                                                        }
+                                                    },
+                                                )}
                                             </>
                                         );
                                     })()}
@@ -140,13 +152,6 @@ function AgentChat() {
 
                 <div className="border-t p-4">
                     <PromptInput globalDrop multiple onSubmit={handleSubmit}>
-                        <PromptInputHeader>
-                            <PromptInputAttachments>
-                                {attachment => (
-                                    <PromptInputAttachment data={attachment} />
-                                )}
-                            </PromptInputAttachments>
-                        </PromptInputHeader>
                         <PromptInputBody>
                             <PromptInputTextarea
                                 onChange={event => setText(event.target.value)}
@@ -169,4 +174,3 @@ function AgentChat() {
         </SidebarInset>
     );
 }
-
