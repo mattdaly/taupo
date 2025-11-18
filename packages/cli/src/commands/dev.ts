@@ -1,7 +1,9 @@
 import { build } from 'tsdown';
 import { resolve, dirname, relative } from 'path';
-import { existsSync, readFileSync } from 'fs';
+import { existsSync } from 'fs';
 import { watch } from 'chokidar';
+import { config as loadEnv } from 'dotenv';
+import { createRequire } from 'module';
 import { startDevServer } from '../dev-server.js';
 
 interface DevOptions {
@@ -123,25 +125,8 @@ async function startOrRestartServer(
 export async function devCommand(options: DevOptions) {
     const cwd = process.cwd();
 
-    // Load .env file from the user's project directory (silently)
-    const envPath = resolve(cwd, '.env');
-    if (existsSync(envPath)) {
-        try {
-            const envContent = readFileSync(envPath, 'utf-8');
-            envContent.split('\n').forEach(line => {
-                const trimmed = line.trim();
-                if (trimmed && !trimmed.startsWith('#')) {
-                    const [key, ...valueParts] = trimmed.split('=');
-                    if (key && valueParts.length > 0) {
-                        const value = valueParts.join('=').trim();
-                        process.env[key.trim()] = value;
-                    }
-                }
-            });
-        } catch (error) {
-            // Silently ignore .env parsing errors
-        }
-    }
+    // Load .env file from the user's project directory
+    loadEnv({ path: resolve(cwd, '.env') });
 
     const entryPath = resolve(cwd, options.entry);
     const relativeEntry = relative(cwd, entryPath);
@@ -149,13 +134,10 @@ export async function devCommand(options: DevOptions) {
     const bundlePath = resolve(outputDir, 'index.mjs');
     const port = parseInt(options.port, 10);
 
-    // Find lab package - navigate from taupo package to packages dir, then to lab
-    // import.meta.url: .../packages/taupo/dist/cli/index.mjs
-    // -> .../packages/taupo/dist/cli -> .../packages/taupo/dist -> .../packages/taupo -> .../packages -> .../packages/lab
-    const labPath = resolve(
-        dirname(dirname(dirname(dirname(fileURLToPath(import.meta.url))))),
-        'lab',
-    );
+    // Resolve @taupo/lab package from node_modules
+    const require = createRequire(import.meta.url);
+    const labPackageJson = require.resolve('@taupo/lab/package.json');
+    const labPath = dirname(labPackageJson);
 
     console.log(`🌊 Taupo Dev\n\n`);
 
@@ -226,8 +208,4 @@ export async function devCommand(options: DevOptions) {
         watcher.close();
         process.exit(0);
     });
-}
-
-function fileURLToPath(url: string): string {
-    return url.replace('file://', '');
 }

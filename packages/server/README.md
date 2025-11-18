@@ -17,13 +17,13 @@ Taupo wraps [Hono](https://hono.dev/) to provide a clean, type-safe way to expos
 ## Installation
 
 ```bash
-npm install @taupo/taupo @taupo/ai hono
+npm install @taupo/server @taupo/ai hono
 ```
 
 ## Quick Start
 
 ```typescript
-import { Taupo } from '@taupo/taupo';
+import { Taupo } from '@taupo/server';
 import { Agent } from '@taupo/ai';
 import { anthropic } from '@ai-sdk/anthropic';
 
@@ -290,7 +290,7 @@ All errors follow a consistent format:
 ### With Middleware
 
 ```typescript
-import { Taupo } from '@taupo/taupo';
+import { Taupo } from '@taupo/server';
 import { bearerAuth } from 'hono/bearer-auth';
 import { logger } from 'hono/logger';
 
@@ -330,7 +330,7 @@ export default server;
 ### Running Locally with Node.js
 
 ```typescript
-import { Taupo } from '@taupo/taupo';
+import { Taupo } from '@taupo/server';
 import { serve } from '@hono/node-server';
 
 const server = new Taupo({
@@ -352,7 +352,7 @@ console.log('Server running at http://localhost:3000');
 
 ```typescript
 // src/index.ts
-import { Taupo } from '@taupo/taupo';
+import { Taupo } from '@taupo/server';
 
 const server = new Taupo({
     agents: {
@@ -367,7 +367,7 @@ export default server;
 ### Deno Deploy
 
 ```typescript
-import { Taupo } from '@taupo/taupo';
+import { Taupo } from '@taupo/server';
 
 const server = new Taupo({
     agents: {
@@ -384,7 +384,7 @@ Deno.serve(server.fetch);
 ### Custom Error Handling
 
 ```typescript
-import { Taupo } from '@taupo/taupo';
+import { Taupo } from '@taupo/server';
 
 const server = new Taupo({
     agents: {
@@ -465,7 +465,7 @@ Taupo servers can be easily tested using standard HTTP testing tools:
 
 ```typescript
 import { describe, it, expect } from 'vitest';
-import { Taupo } from '@taupo/taupo';
+import { Taupo } from '@taupo/server';
 
 describe('My Server', () => {
     it('should list agents', async () => {

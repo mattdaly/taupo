@@ -2,6 +2,7 @@
     "name": "example-taupo-worker",
     "version": "0.1.0",
     "private": true,
+    "license": "MIT",
     "type": "module",
     "scripts": {
         "dev": "taupo dev",
@@ -10,11 +11,12 @@
     },
     "dependencies": {
         "@ai-sdk/google": "^3.0.0-beta.43",
-        "@taupo/taupo": "*",
+        "@taupo/server": "*",
         "ai": "^6.0.0-beta.99",
         "zod": "^3.25.76"
     },
     "devDependencies": {
+        "@taupo/cli": "*",
         "typescript": "^5.7.2",
         "wrangler": "^4.47.0"
     }

@@ -18,7 +18,7 @@ import {
  *
  * @example
  * ```typescript
- * import { Taupo } from '@taupo/taupo';
+ * import { Taupo } from '@taupo/server';
  * import { myAgent, routerAgent } from './agents';
  * import { authMiddleware } from './middleware';
  *

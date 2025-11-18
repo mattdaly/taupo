@@ -33,7 +33,9 @@ export async function startDevServer(options: DevServerOptions): Promise<any> {
         const newRequest = new Request(url.toString(), {
             method: c.req.method,
             headers: c.req.raw.headers,
-            body: c.req.raw.body,
+            body: ['GET', 'HEAD'].includes(c.req.method)
+                ? undefined
+                : c.req.raw.body,
         });
 
         return userTaupo.fetch(newRequest);

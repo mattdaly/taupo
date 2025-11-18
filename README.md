@@ -5,13 +5,13 @@ A framework server for building AI agents in Typescript.
 ### Packages
 
 - `@taupo/ai`: A library that extend of the AI SDK by Vercel
-- `@taupo/taupo`: A framework for building AI agents in Typescript (includes CLI tools)
-- `@taupo/lab`: A local development environment for working with the taupo framework
+- `@taupo/server`: A framework for building and serving AI agents in Typescript
+- `@taupo/cli`: CLI tools for development and building (includes Lab UI)
 
 ### Examples
 
 - `example-ai-worker`: Using the @taupo/ai library directly for more control
-- `example-taupo-worker` Using the @taupo/taupo framework for a built in server
+- `example-taupo-worker` Using the @taupo/server framework for a built in server
 
 ### Build
 

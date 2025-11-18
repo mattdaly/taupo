@@ -1,26 +1,22 @@
 {
-    "name": "@taupo/taupo",
+    "name": "@taupo/cli",
     "version": "0.0.0",
-    "description": "A framework for building AI agents in Typescript",
+    "description": "CLI for Taupo - AI Agent Framework",
     "license": "MIT",
     "sideEffects": false,
     "files": [
         "dist"
     ],
     "bin": {
-        "taupo": "./dist/cli/index.mjs"
+        "taupo": "./dist/index.mjs"
     },
-    "main": "./dist/index.cjs",
+    "main": "./dist/index.mjs",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.cts",
     "exports": {
         ".": {
             "import": "./dist/index.mjs",
             "require": "./dist/index.cjs"
-        },
-        "./cli": {
-            "import": "./dist/cli/index.mjs",
-            "require": "./dist/cli/index.cjs"
         },
         "./package.json": "./package.json"
     },
@@ -31,26 +27,22 @@
         "typecheck": "tsc --build"
     },
     "dependencies": {
-        "@taupo/ai": "*",
-        "@taupo/lab": "*",
-        "hono": "^4.6.14"
-    },
-    "devDependencies": {
         "@hono/node-server": "^1.13.7",
-        "@taupo/tsconfig": "*",
-        "@types/node": "^24.10.1",
-        "ai": "^6.0.0-beta.99",
+        "@taupo/lab": "*",
         "chokidar": "^4.0.3",
         "commander": "^12.1.0",
         "dotenv": "^17.2.3",
-        "tsdown": "^0.16.0",
+        "hono": "^4.6.14",
+        "tsdown": "^0.16.0"
+    },
+    "devDependencies": {
+        "@taupo/tsconfig": "*",
+        "@types/node": "^24.10.1",
         "typescript": "^5.9.3",
-        "vitest": "^4.0.8",
-        "zod": "3.25.76"
+        "vitest": "^4.0.8"
     },
     "peerDependencies": {
-        "ai": "^6.0.0-beta.99",
-        "zod": "^3.25.76 || ^4.1.8"
+        "@taupo/server": "*"
     },
     "engines": {
         "node": ">=18"

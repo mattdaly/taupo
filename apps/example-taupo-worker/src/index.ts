@@ -1,4 +1,4 @@
-import { Taupo } from '@taupo/taupo';
+import { Taupo } from '@taupo/server';
 import { factsAgent } from './agents/facts';
 import { corsMiddleware } from './middleware/cors';
 
