@@ -30,6 +30,7 @@ dist
 .wrangler
 .taupo
 .tanstack
+tsconfig.tsbuildinfo
 
 # Debug
 npm-debug.log*

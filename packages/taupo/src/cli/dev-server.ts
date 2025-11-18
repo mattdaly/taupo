@@ -8,15 +8,14 @@ interface DevServerOptions {
     bundlePath: string;
     port: number;
     labPath: string;
+    silent?: boolean;
 }
 
-export async function startDevServer(options: DevServerOptions) {
+export async function startDevServer(options: DevServerOptions): Promise<any> {
     const app = new Hono();
 
     // Dynamically import user's bundled Taupo instance
-    const userModule = await import(
-        `${options.bundlePath}?t=${Date.now()}`
-    );
+    const userModule = await import(`${options.bundlePath}?t=${Date.now()}`);
     const userTaupo = userModule.default;
 
     if (!userTaupo || typeof userTaupo.fetch !== 'function') {
@@ -30,20 +29,20 @@ export async function startDevServer(options: DevServerOptions) {
         const path = c.req.path.replace(/^\/api/, '');
         const url = new URL(c.req.url);
         url.pathname = path;
-        
+
         const newRequest = new Request(url.toString(), {
             method: c.req.method,
             headers: c.req.raw.headers,
             body: c.req.raw.body,
         });
-        
+
         return userTaupo.fetch(newRequest);
     });
 
     // Serve Lab static files
     const labOutPath = resolve(options.labPath, 'out');
     const indexHtmlPath = resolve(labOutPath, 'index.html');
-    
+
     // Serve static assets (with exact paths)
     app.use(
         '/*',
@@ -58,19 +57,19 @@ export async function startDevServer(options: DevServerOptions) {
         return c.html(indexHtml);
     });
 
-    // Start server
-    const server = serve(
-        {
-            fetch: app.fetch,
-            port: options.port,
-        },
-        info => {
-            console.log('');
-            console.log(`  ▲ Ready on http://localhost:${info.port}`);
-            console.log('');
-        },
-    );
-
-    return server;
+    // Start server and wait for it to be ready
+    return new Promise(resolve => {
+        const server = serve(
+            {
+                fetch: app.fetch,
+                port: options.port,
+            },
+            info => {
+                if (!options.silent) {
+                    console.log(`  ✓ Server: http://localhost:${info.port}`);
+                }
+                resolve(server);
+            },
+        );
+    });
 }
-
