@@ -15,13 +15,5 @@ export type {
     ErrorResponse,
 } from './types';
 
-// Re-export commonly used types from @taupo/ai for convenience
-export type {
-    Agent,
-    AgentSettings,
-    AgentCallParameters,
-    AgentInfo,
-    RouterAgent,
-    RouterAgentSettings,
-    AgentInfoNode,
-} from '@taupo/ai';
+// Re-export everything from @taupo/ai for convenience
+export * from '@taupo/ai';

@@ -25,10 +25,11 @@
     },
     "dependencies": {
         "@taupo/ai": "*",
+        "@taupo/cli": "*",
+        "@taupo/lab": "*",
         "hono": "^4.6.14"
     },
     "devDependencies": {
-        "@taupo/cli": "*",
         "@taupo/tsconfig": "*",
         "@hono/node-server": "^1.13.7",
         "@types/node": "^24.10.1",
