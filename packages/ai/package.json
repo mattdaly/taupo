@@ -1,6 +1,6 @@
 {
     "name": "@taupo/ai",
-    "version": "0.0.0",
+    "version": "0.0.2",
     "description": "An extension of the AI SDK by Vercel",
     "license": "MIT",
     "sideEffects": false,
