@@ -53,7 +53,7 @@ export async function startDevServer(options: DevServerOptions) {
     );
 
     // Fallback to index.html for client-side routing (SPA)
-    app.use('/*', c => {
+    app.use('/*', async c => {
         const indexHtml = readFileSync(indexHtmlPath, 'utf-8');
         return c.html(indexHtml);
     });

@@ -7,6 +7,9 @@
     "files": [
         "dist"
     ],
+    "bin": {
+        "taupo": "./dist/cli/index.mjs"
+    },
     "main": "./dist/index.cjs",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.cts",
@@ -14,6 +17,10 @@
         ".": {
             "import": "./dist/index.mjs",
             "require": "./dist/index.cjs"
+        },
+        "./cli": {
+            "import": "./dist/cli/index.mjs",
+            "require": "./dist/cli/index.cjs"
         },
         "./package.json": "./package.json"
     },
@@ -25,15 +32,17 @@
     },
     "dependencies": {
         "@taupo/ai": "*",
-        "@taupo/cli": "*",
         "@taupo/lab": "*",
         "hono": "^4.6.14"
     },
     "devDependencies": {
-        "@taupo/tsconfig": "*",
         "@hono/node-server": "^1.13.7",
+        "@taupo/tsconfig": "*",
         "@types/node": "^24.10.1",
         "ai": "^6.0.0-beta.99",
+        "chokidar": "^4.0.3",
+        "commander": "^12.1.0",
+        "dotenv": "^17.2.3",
         "tsdown": "^0.16.0",
         "typescript": "^5.9.3",
         "vitest": "^4.0.8",

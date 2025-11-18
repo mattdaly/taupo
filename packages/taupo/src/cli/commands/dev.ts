@@ -4,14 +4,13 @@ import { existsSync } from 'fs';
 import { watch } from 'chokidar';
 import { startDevServer } from '../dev-server.js';
 import { config } from 'dotenv';
-import type { Server } from 'node:http';
 
 interface DevOptions {
     entry: string;
     port: string;
 }
 
-let currentServer: Server | null = null;
+let currentServer: any | null = null;
 let isRestarting = false;
 
 async function bundleCode(entryPath: string, outputDir: string) {
@@ -69,9 +68,11 @@ export async function devCommand(options: DevOptions) {
     const bundlePath = resolve(outputDir, 'index.mjs');
     const port = parseInt(options.port, 10);
 
-    // Find lab package
+    // Find lab package - navigate from taupo package to packages dir, then to lab
+    // import.meta.url: .../packages/taupo/dist/cli/index.mjs
+    // -> .../packages/taupo/dist/cli -> .../packages/taupo/dist -> .../packages/taupo -> .../packages -> .../packages/lab
     const labPath = resolve(
-        dirname(dirname(dirname(fileURLToPath(import.meta.url)))),
+        dirname(dirname(dirname(dirname(fileURLToPath(import.meta.url))))),
         'lab',
     );
 
@@ -153,3 +154,4 @@ export async function devCommand(options: DevOptions) {
 function fileURLToPath(url: string): string {
     return url.replace('file://', '');
 }
+
