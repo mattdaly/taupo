@@ -23,13 +23,10 @@ export async function listAgentsHandler(
 ) {
     const agentList: AgentListItem[] = Array.from(agents.entries()).map(
         ([key, agent]) => {
-            const tree = agent.getAgentTree();
+            const tree: AgentInfoNode = agent.getAgentTree();
             return {
+                ...tree,
                 key,
-                name: agent.info.name,
-                capabilities: agent.info.capabilities,
-                type: tree.type,
-                model: agent.info.model,
             };
         },
     );

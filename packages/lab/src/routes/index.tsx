@@ -17,10 +17,10 @@ function Home() {
             </header>
             <div className="flex flex-1 flex-col items-center justify-center gap-6 p-6">
                 <div className="flex flex-col gap-3 text-center max-w-md">
-                    <h2 className="text-3xl font-bold">Welcome to Taupo Lab</h2>
+                    <h2 className="text-3xl font-bold">Welcome to Taupō</h2>
                     <p className="text-muted-foreground">
-                        Your development environment for building and testing AI
-                        agents
+                        Your development environment for building <br />
+                        and testing AI agents
                     </p>
                 </div>
 

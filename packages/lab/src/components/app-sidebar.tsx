@@ -32,8 +32,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     return (
         <Sidebar {...props}>
             <SidebarHeader>
-                <div className="px-2 py-4">
-                    <h2 className="text-lg font-semibold">Taupo Lab</h2>
+                <div className="px-2 py-0.5">
+                    <h2 className="text-lg font-semibold">Taupō</h2>
                     <p className="text-xs text-muted-foreground">
                         Development environment
                     </p>

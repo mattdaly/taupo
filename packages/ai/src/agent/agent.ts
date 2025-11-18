@@ -170,6 +170,7 @@ export class Agent<
     public getAgentTree(): AgentInfoNode {
         return {
             type: 'agent',
+            tools: Object.keys(this.tools ?? {}),
             ...this.info,
         };
     }

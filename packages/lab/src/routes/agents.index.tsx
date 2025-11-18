@@ -3,7 +3,10 @@ import useSWR from 'swr';
 import { fetcher } from '@/lib/utils';
 import { SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
 import { Separator } from '@/components/ui/separator';
-import { Agent } from '@/types';
+import { AgentInfoNode } from '@taupo/ai';
+import { Badge } from '@/components/ui/badge';
+
+type AgentInfoNodeWithKey = AgentInfoNode & { key: string };
 
 export const Route = createFileRoute('/agents/')({
     component: Agents,
@@ -11,10 +14,9 @@ export const Route = createFileRoute('/agents/')({
 
 function Agents() {
     const navigate = useNavigate();
-    const { data, error, isLoading } = useSWR<{ agents: Agent[] }>(
-        `/api/agents`,
-        fetcher,
-    );
+    const { data, error, isLoading } = useSWR<{
+        agents: AgentInfoNodeWithKey[];
+    }>(`/api/agents`, fetcher);
 
     return (
         <SidebarInset>
@@ -72,7 +74,9 @@ function Agents() {
                                             {agent.capabilities || '-'}
                                         </td>
                                         <td className="p-4 align-middle">
-                                            {agent.model || '-'}
+                                            <Badge variant="outline">
+                                                {agent.model}
+                                            </Badge>
                                         </td>
                                     </tr>
                                 ))}
