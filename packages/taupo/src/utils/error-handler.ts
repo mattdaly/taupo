@@ -75,11 +75,5 @@ export function invalidRequestBody(c: Context, details?: string) {
  */
 export function agentExecutionError(c: Context, error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error';
-    return errorResponse(
-        c,
-        500,
-        'Agent execution failed',
-        message,
-    );
+    return errorResponse(c, 500, 'Agent execution failed', message);
 }
-

@@ -25,4 +25,3 @@ program
     .action(devCommand);
 
 program.parse();
-

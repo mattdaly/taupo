@@ -35,11 +35,13 @@ export async function handleStreamResponse(
             await stream.writeSSE({
                 data: JSON.stringify({
                     type: 'error',
-                    error: error instanceof Error ? error.message : 'Unknown error',
+                    error:
+                        error instanceof Error
+                            ? error.message
+                            : 'Unknown error',
                 }),
                 event: 'error',
             });
         }
     });
 }
-

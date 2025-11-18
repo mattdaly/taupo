@@ -51,4 +51,3 @@ export async function buildCommand(options: BuildOptions) {
         process.exit(1);
     }
 }
-

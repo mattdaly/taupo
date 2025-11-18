@@ -65,7 +65,10 @@ function Agents() {
                                 key={agent.key}
                                 className="cursor-pointer hover:bg-accent transition-colors"
                                 onClick={() =>
-                                    navigate({ to: '/agents/$name', params: { name: agent.key } })
+                                    navigate({
+                                        to: '/agents/$name',
+                                        params: { name: agent.key },
+                                    })
                                 }
                             >
                                 <CardHeader>
@@ -99,4 +102,3 @@ function Agents() {
         </SidebarInset>
     );
 }
-
