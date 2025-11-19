@@ -1,5 +1,20 @@
-import type { Agent, RouterAgent } from '@taupo/ai';
-import type { MiddlewareHandler } from 'hono';
+import type {
+    Agent,
+    RouterAgent,
+    CreateAgentUIStreamResponseOptions,
+    ToolCallContext,
+} from '@taupo/ai';
+import type { MiddlewareHandler, Context } from 'hono';
+
+export interface TaupoAgentConfiguration {
+    agent: Agent<any, any, any> | RouterAgent<any>;
+    uiStreamOptions: Omit<
+        CreateAgentUIStreamResponseOptions,
+        'agent' | 'messages' | 'prompt' | 'context'
+    > & {
+        context?: ToolCallContext | ((ctx: Context) => ToolCallContext);
+    };
+}
 
 /**
  * Configuration options for creating a Taupo server instance.
@@ -21,7 +36,10 @@ export interface TaupoConfig {
      * });
      * ```
      */
-    agents: Record<string, Agent<any, any, any> | RouterAgent<any>>;
+    agents: Record<
+        string,
+        Agent<any, any, any> | RouterAgent<any> | TaupoAgentConfiguration
+    >;
 
     /**
      * Optional array of Hono middleware to apply to all routes.

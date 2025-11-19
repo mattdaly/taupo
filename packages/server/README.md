@@ -71,13 +71,50 @@ new Taupo(config: TaupoConfig)
 
 ```typescript
 interface TaupoConfig {
-    agents: Record<string, Agent | RouterAgent>;
+    agents: Record<string, Agent | RouterAgent | TaupoAgentConfiguration>;
     middleware?: Array<MiddlewareHandler>;
+}
+
+interface TaupoAgentConfiguration {
+    agent: Agent | RouterAgent;
+    uiStreamOptions: {
+        context?: ToolCallContext | ((ctx: Context) => ToolCallContext);
+        // ... other CreateAgentUIStreamResponseOptions
+    };
 }
 ```
 
-- **agents** - Record of agents to register. The key is used as the URL path segment (e.g., `{ invoice: agent }` creates `/agent/invoice/*` endpoints).
+- **agents** - Record of agents to register. Can be a direct agent instance or a configuration object.
 - **middleware** - Optional array of Hono middleware functions applied to all routes.
+
+### Agent Configuration
+
+You can provide additional configuration for agents, specifically for the UI streaming endpoint (`/chat`), by using the `TaupoAgentConfiguration` object. This allows you to pass custom options and dynamic context to your tools.
+
+```typescript
+const server = new Taupo({
+    agents: {
+        // Simple registration
+        simple: simpleAgent,
+
+        // Advanced configuration with UI stream options
+        advanced: {
+            agent: advancedAgent,
+            uiStreamOptions: {
+                // Pass dynamic context to tools based on the request
+                context: (c) => ({
+                    userId: c.get('jwtPayload')?.sub,
+                    headers: c.req.header(),
+                }),
+                // Handle stream completion
+                onFinish: async (message) => {
+                    await saveToDatabase(message);
+                },
+            },
+        },
+    },
+});
+```
 
 ### HTTP Endpoints
 

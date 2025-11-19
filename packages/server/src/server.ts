@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import type { Agent, RouterAgent } from '@taupo/ai';
-import type { TaupoConfig } from './types';
+import type { TaupoConfig, TaupoAgentConfiguration } from './types';
 import {
     listAgentsHandler,
     agentMetadataHandler,
@@ -52,7 +52,7 @@ export class Taupo {
      */
     private readonly agents: Map<
         string,
-        Agent<any, any, any> | RouterAgent<any>
+        Agent<any, any, any> | RouterAgent<any> | TaupoAgentConfiguration
     >;
 
     /**
@@ -121,7 +121,10 @@ export class Taupo {
      * @param agents - Record of agents to register (key = URL path name)
      */
     private registerAgents(
-        agents: Record<string, Agent<any, any, any> | RouterAgent<any>>,
+        agents: Record<
+            string,
+            Agent<any, any, any> | RouterAgent<any> | TaupoAgentConfiguration
+        >,
     ): void {
         for (const [key, agent] of Object.entries(agents)) {
             this.agents.set(key, agent);

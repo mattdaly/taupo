@@ -1,7 +1,11 @@
 import type { Context } from 'hono';
 import type { Agent, RouterAgent, AgentInfoNode } from '@taupo/ai';
 import { createAgentUIStreamResponse } from '@taupo/ai';
-import type { AgentsListResponse, AgentListItem } from './types';
+import type {
+    AgentsListResponse,
+    AgentListItem,
+    TaupoAgentConfiguration,
+} from './types';
 import {
     agentNotFound,
     invalidRequestBody,
@@ -9,20 +13,33 @@ import {
 } from './utils/error-handler';
 import { handleStreamResponse } from './utils/stream-handler';
 
+function getAgent(
+    entry: Agent<any, any, any> | RouterAgent<any> | TaupoAgentConfiguration,
+) {
+    if ('generate' in entry && typeof (entry as any).generate === 'function') {
+        return entry as Agent<any, any, any> | RouterAgent<any>;
+    }
+    return (entry as TaupoAgentConfiguration).agent;
+}
+
 /**
  * GET /agents
  * Returns a list of all registered agents with basic information.
  *
- * @param c - Hono context
+ * @param ctx - Hono context
  * @param agents - Map of registered agents
  * @returns JSON response with agents array
  */
 export async function listAgentsHandler(
-    c: Context,
-    agents: Map<string, Agent<any, any, any> | RouterAgent<any>>,
+    ctx: Context,
+    agents: Map<
+        string,
+        Agent<any, any, any> | RouterAgent<any> | TaupoAgentConfiguration
+    >,
 ) {
     const agentList: AgentListItem[] = Array.from(agents.entries()).map(
-        ([key, agent]) => {
+        ([key, entry]) => {
+            const agent = getAgent(entry);
             const tree: AgentInfoNode = agent.getAgentTree();
             return {
                 ...tree,
@@ -35,7 +52,7 @@ export async function listAgentsHandler(
         agents: agentList,
     };
 
-    return c.json(response);
+    return ctx.json(response);
 }
 
 /**
@@ -43,23 +60,27 @@ export async function listAgentsHandler(
  * Returns detailed metadata for a specific agent.
  * Includes the full agent tree (with sub-agents for RouterAgents).
  *
- * @param c - Hono context
+ * @param ctx - Hono context
  * @param agents - Map of registered agents
  * @returns JSON response with agent metadata or 404 if not found
  */
 export async function agentMetadataHandler(
-    c: Context,
-    agents: Map<string, Agent<any, any, any> | RouterAgent<any>>,
+    ctx: Context,
+    agents: Map<
+        string,
+        Agent<any, any, any> | RouterAgent<any> | TaupoAgentConfiguration
+    >,
 ) {
-    const agentName = c.req.param('name');
-    const agent = agents.get(agentName);
+    const agentName = ctx.req.param('name');
+    const entry = agents.get(agentName);
 
-    if (!agent) {
-        return agentNotFound(c, agentName);
+    if (!entry) {
+        return agentNotFound(ctx, agentName);
     }
 
+    const agent = getAgent(entry);
     const tree: AgentInfoNode = agent.getAgentTree();
-    return c.json(tree);
+    return ctx.json(tree);
 }
 
 /**
@@ -67,40 +88,45 @@ export async function agentMetadataHandler(
  * Executes an agent in generate mode (non-streaming).
  * Expects request body in AI SDK format: { prompt?, messages?, options? }
  *
- * @param c - Hono context
+ * @param ctx - Hono context
  * @param agents - Map of registered agents
  * @returns JSON response with generation result or error
  */
 export async function agentGenerateHandler(
-    c: Context,
-    agents: Map<string, Agent<any, any, any> | RouterAgent<any>>,
+    ctx: Context,
+    agents: Map<
+        string,
+        Agent<any, any, any> | RouterAgent<any> | TaupoAgentConfiguration
+    >,
 ) {
-    const agentName = c.req.param('name');
-    const agent = agents.get(agentName);
+    const agentName = ctx.req.param('name');
+    const entry = agents.get(agentName);
 
-    if (!agent) {
-        return agentNotFound(c, agentName);
+    if (!entry) {
+        return agentNotFound(ctx, agentName);
     }
 
+    const agent = getAgent(entry);
+
     try {
-        const body = await c.req.json();
+        const body = await ctx.req.json();
 
         if (!body.prompt && !body.messages) {
             return invalidRequestBody(
-                c,
+                ctx,
                 'Request must include either "prompt" or "messages" field',
             );
         }
 
         const result = await agent.generate(body);
 
-        return c.json(result);
+        return ctx.json(result);
     } catch (error) {
         if (error instanceof SyntaxError) {
-            return invalidRequestBody(c, 'Invalid JSON in request body');
+            return invalidRequestBody(ctx, 'Invalid JSON in request body');
         }
 
-        return agentExecutionError(c, error);
+        return agentExecutionError(ctx, error);
     }
 }
 
@@ -110,40 +136,45 @@ export async function agentGenerateHandler(
  * Expects request body in AI SDK format: { prompt?, messages?, options? }
  * Returns a Server-Sent Events stream.
  *
- * @param c - Hono context
+ * @param ctx - Hono context
  * @param agents - Map of registered agents
  * @returns SSE stream response or error
  */
 export async function agentStreamHandler(
-    c: Context,
-    agents: Map<string, Agent<any, any, any> | RouterAgent<any>>,
+    ctx: Context,
+    agents: Map<
+        string,
+        Agent<any, any, any> | RouterAgent<any> | TaupoAgentConfiguration
+    >,
 ) {
-    const agentName = c.req.param('name');
-    const agent = agents.get(agentName);
+    const agentName = ctx.req.param('name');
+    const entry = agents.get(agentName);
 
-    if (!agent) {
-        return agentNotFound(c, agentName);
+    if (!entry) {
+        return agentNotFound(ctx, agentName);
     }
 
+    const agent = getAgent(entry);
+
     try {
-        const body = await c.req.json();
+        const body = await ctx.req.json();
 
         if (!body.prompt && !body.messages) {
             return invalidRequestBody(
-                c,
+                ctx,
                 'Request must include either "prompt" or "messages" field',
             );
         }
 
         const streamResult = await agent.stream(body);
 
-        return handleStreamResponse(c, streamResult);
+        return handleStreamResponse(ctx, streamResult);
     } catch (error) {
         if (error instanceof SyntaxError) {
-            return invalidRequestBody(c, 'Invalid JSON in request body');
+            return invalidRequestBody(ctx, 'Invalid JSON in request body');
         }
 
-        return agentExecutionError(c, error);
+        return agentExecutionError(ctx, error);
     }
 }
 
@@ -155,41 +186,55 @@ export async function agentStreamHandler(
  *
  * This endpoint is designed for frontends using useChat() or similar hooks.
  *
- * @param c - Hono context
+ * @param ctx - Hono context
  * @param agents - Map of registered agents
  * @returns UI stream response or error
  */
 export async function agentChatHandler(
-    c: Context,
-    agents: Map<string, Agent<any, any, any> | RouterAgent<any>>,
+    ctx: Context,
+    agents: Map<
+        string,
+        Agent<any, any, any> | RouterAgent<any> | TaupoAgentConfiguration
+    >,
 ) {
-    const agentName = c.req.param('name');
-    const agent = agents.get(agentName);
+    const agentName = ctx.req.param('name');
+    const entry = agents.get(agentName);
 
-    if (!agent) {
-        return agentNotFound(c, agentName);
+    if (!entry) {
+        return agentNotFound(ctx, agentName);
     }
 
+    const agent = getAgent(entry);
+    const uiStreamOptions =
+        'uiStreamOptions' in entry ? entry.uiStreamOptions : {};
+
     try {
-        const body = await c.req.json();
+        const body = await ctx.req.json();
 
         if (!body.messages || !Array.isArray(body.messages)) {
             return invalidRequestBody(
-                c,
+                ctx,
                 'Request must include "messages" array',
             );
         }
+
+        const context =
+            typeof uiStreamOptions.context === 'function'
+                ? uiStreamOptions.context(ctx)
+                : uiStreamOptions.context;
 
         return await createAgentUIStreamResponse({
             agent,
             messages: body.messages,
             maxMessagesInContext: body.maxMessagesInContext,
+            ...uiStreamOptions,
+            context,
         });
     } catch (error) {
         if (error instanceof SyntaxError) {
-            return invalidRequestBody(c, 'Invalid JSON in request body');
+            return invalidRequestBody(ctx, 'Invalid JSON in request body');
         }
 
-        return agentExecutionError(c, error);
+        return agentExecutionError(ctx, error);
     }
 }
