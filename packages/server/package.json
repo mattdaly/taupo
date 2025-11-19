@@ -1,6 +1,6 @@
 {
     "name": "@taupo/server",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "A framework for building AI agents in Typescript",
     "license": "MIT",
     "sideEffects": false,

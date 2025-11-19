@@ -1,5 +1,13 @@
 # @taupo/server
 
+## 0.0.2
+
+### Patch Changes
+
+- a7ac76e: New agent stream options config for server; update readmes
+- Updated dependencies [a7ac76e]
+    - @taupo/ai@0.0.5
+
 ## 0.0.1
 
 ### Patch Changes
