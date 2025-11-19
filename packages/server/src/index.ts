@@ -14,6 +14,3 @@ export type {
     AgentsListResponse,
     ErrorResponse,
 } from './types';
-
-// Re-export everything from @taupo/ai for convenience
-export * from '@taupo/ai';
