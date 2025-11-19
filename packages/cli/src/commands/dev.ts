@@ -5,6 +5,7 @@ import { watch } from 'chokidar';
 import { config as loadEnv } from 'dotenv';
 import { createRequire } from 'module';
 import { startDevServer } from '../dev-server.js';
+import { findAvailablePort } from '../utils/find-available-port.js';
 
 interface DevOptions {
     entry: string;
@@ -132,7 +133,14 @@ export async function devCommand(options: DevOptions) {
     const relativeEntry = relative(cwd, entryPath);
     const outputDir = resolve(cwd, '.taupo');
     const bundlePath = resolve(outputDir, 'index.mjs');
-    const port = parseInt(options.port, 10);
+    const requestedPort = parseInt(options.port, 10);
+    const port = await findAvailablePort(requestedPort);
+
+    if (port !== requestedPort) {
+        console.log(
+            `⚠️  Port ${requestedPort} is in use, using ${port} instead\n`,
+        );
+    }
 
     // Resolve @taupo/lab package from node_modules
     const require = createRequire(import.meta.url);
