@@ -1,5 +1,11 @@
 # @taupo/server
 
+## 0.0.4
+
+### Patch Changes
+
+- 58199bd: Don't export ai from server
+
 ## 0.0.3
 
 ### Patch Changes
