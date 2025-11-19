@@ -206,7 +206,7 @@ export class RouterAgent<CALL_OPTIONS = never> extends Agent<
 
         writer?.write({
             type: 'data-status',
-            data: { text: 'Determining sub-agent to route to...' },
+            data: { text: 'Routing...' },
         });
 
         const routerStream = await super.stream(options);
@@ -241,10 +241,6 @@ export class RouterAgent<CALL_OPTIONS = never> extends Agent<
         writer?.write({
             type: 'data-handoff',
             data: { agent: agent.info.name },
-        });
-        writer?.write({
-            type: 'data-status',
-            data: { text: 'Executing sub-agent...' },
         });
 
         // TODO: the type of CALL_OPTIONS (and their callOptionSchema) is different to the routers, hence the error
