@@ -1,5 +1,13 @@
 # @taupo/cli
 
+## 0.0.3
+
+### Patch Changes
+
+- 753977f: Discover available port in cli; ai is peer dep of server
+- Updated dependencies [753977f]
+    - @taupo/server@0.0.3
+
 ## 0.0.2
 
 ### Patch Changes

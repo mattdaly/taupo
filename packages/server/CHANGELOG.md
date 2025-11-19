@@ -1,5 +1,11 @@
 # @taupo/server
 
+## 0.0.3
+
+### Patch Changes
+
+- 753977f: Discover available port in cli; ai is peer dep of server
+
 ## 0.0.2
 
 ### Patch Changes
