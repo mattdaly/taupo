@@ -1,6 +1,6 @@
 {
     "name": "@taupo/cli",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "description": "CLI for Taupo - AI Agent Framework",
     "license": "MIT",
     "sideEffects": false,

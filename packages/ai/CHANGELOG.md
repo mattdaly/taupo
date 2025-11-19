@@ -1,5 +1,11 @@
 # @taupo/ai
 
+## 0.0.3
+
+### Patch Changes
+
+- 602a194: Release server and cli
+
 ## 0.0.2
 
 ### Patch Changes
