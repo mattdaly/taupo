@@ -17,8 +17,10 @@ Taupo wraps [Hono](https://hono.dev/) to provide a clean, type-safe way to expos
 ## Installation
 
 ```bash
-npm install @taupo/server ai@beta zod
+npm install @taupo/ai @taupo/server ai@beta zod
 ```
+
+> **Note:** Both `@taupo/ai` and `@taupo/server` are required. The AI package provides the core agent functionality, while the server package provides the HTTP framework.
 
 ## Quick Start
 
