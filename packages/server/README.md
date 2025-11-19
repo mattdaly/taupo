@@ -17,21 +17,20 @@ Taupo wraps [Hono](https://hono.dev/) to provide a clean, type-safe way to expos
 ## Installation
 
 ```bash
-npm install @taupo/server @taupo/ai hono
+npm install @taupo/server ai@beta zod
 ```
 
 ## Quick Start
 
 ```typescript
-import { Taupo } from '@taupo/server';
-import { Agent } from '@taupo/ai';
-import { anthropic } from '@ai-sdk/anthropic';
+import { Taupo, Agent } from '@taupo/server';
+import { google } from '@ai-sdk/google';
 
 // Create your agents
 const invoiceAgent = new Agent({
     name: 'Invoice Agent',
     capabilities: 'Handles invoice creation, booking, and sending',
-    model: anthropic('claude-3-5-sonnet-20241022'),
+    model: google('gemini-2.5-pro'),
     instructions: 'You are an invoice management expert...',
     tools: {
         // Your agent tools
@@ -41,7 +40,7 @@ const invoiceAgent = new Agent({
 const customerAgent = new Agent({
     name: 'Customer Agent',
     capabilities: 'Manages customer information and queries',
-    model: anthropic('claude-3-5-sonnet-20241022'),
+    model: google('gemini-2.5-pro'),
     instructions: 'You are a customer service expert...',
     tools: {
         // Your agent tools
@@ -59,39 +58,6 @@ const server = new Taupo({
 // Export for Cloudflare Workers, Deno Deploy, etc.
 export default server;
 ```
-
-## Architecture
-
-Taupo follows a simple architecture:
-
-```
-┌─────────────┐
-│   Client    │
-└──────┬──────┘
-       │
-       │ HTTP Request
-       │
-┌──────▼──────────────────────────────┐
-│          Taupo Server               │
-│  (Hono + Auto-generated Routes)     │
-└──────┬──────────────────────────────┘
-       │
-       │ Delegates to
-       │
-┌──────▼──────────────────────────────┐
-│         Agent Registry              │
-│   ┌─────────┐    ┌─────────┐       │
-│   │ Agent A │    │ Agent B │       │
-│   └─────────┘    └─────────┘       │
-└─────────────────────────────────────┘
-```
-
-### Components
-
-1. **Taupo Class** - Main server class that wraps Hono
-2. **Agent Registry** - Internal map of registered agents
-3. **Route Handlers** - Auto-generated endpoints for each agent
-4. **Middleware Layer** - Optional custom middleware for auth, logging, etc.
 
 ## API Reference
 
@@ -308,12 +274,12 @@ export default server;
 ### With RouterAgent
 
 ```typescript
-import { RouterAgent } from '@taupo/ai';
+import { RouterAgent } from '@taupo/server';
 
 // Create a router that delegates to specialized agents
 const mainRouter = new RouterAgent({
     name: 'Main Router',
-    model: anthropic('claude-3-5-sonnet-20241022'),
+    model: google('gemini-2.5-pro'),
     instructions: 'Route requests to the appropriate specialized agent',
     subAgents: [invoiceAgent, customerAgent, accountingAgent],
 });
@@ -447,18 +413,6 @@ const server = new Taupo({
 });
 ```
 
-## Best Practices
-
-1. **Clean URL Paths** - Use descriptive, URL-friendly keys for your agents (e.g., `invoice`, `customer`, `facts-agent`). Avoid spaces and special characters.
-
-2. **Middleware Order** - Middleware is executed in the order provided. Place authentication/validation middleware before logging middleware.
-
-3. **Error Handling** - Always implement proper error handling in your agent tools and middleware.
-
-4. **Streaming vs Generate** - Use streaming for long-running operations or when you want to provide real-time feedback. Use generate for simpler request/response patterns.
-
-5. **Agent Capabilities** - Write clear, descriptive capabilities for your agents. This helps with agent discovery and is used by RouterAgents for routing decisions.
-
 ## Testing
 
 Taupo servers can be easily tested using standard HTTP testing tools:
@@ -490,7 +444,7 @@ Contributions are welcome! Please see the main repository for contribution guide
 
 ## License
 
-Apache-2.0
+MIT
 
 ## Related Projects
 
